@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <title>Open Engine - API</title>
+
+        <script>
+            const Classes = {};
+            const AllClasses = {
+                accessors: [],
+                methods: []
+            };
+
+            Classes.Camera = {};
+            AllClasses.methods.push(Classes.Camera);
+                Classes.Camera.name = "Camera";
+                Classes.Camera.constructor = [
+                    {name: "engine", type: "Engine", desc: "Define the active engine the camera will use."}
+                ];
+                Classes.Camera.accessors = [
+                    {name: "far", type:"Float", desc: "The max distance cut off. (Any Mesh after this point won't be rendered)"},
+                    {name: "fov", type:"Float", desc: "Field of View for camera projection."},
+                    {name: "near", type:"Float", desc: "The min distance cut off. (Any Mesh before this point won't be rendered)"},
+                    {name: "rotation", type: "Vector3", desc: "Angle of camera projection. (Angle camera is looking at in 3d space)"},
+                    {name: "position", type: "Vector3", desc: "Point where camera projection takes place.  (Position of camera in 3d space)"},
+                ];
+                Classes.Camera.methods = [
+                    {name: "setFov", prams: [
+                        {name: "fov", type: "Float"}
+                    ], desc: "This will set fov of camera. (in radians)"},
+                    {name: "setFovFromDegrees", prams: [
+                        {name: "fov", type: "Float"}
+                    ], desc: "This will set fov of camera. (in degrees)"}
+                ];
+
+            Classes.Vector2 = {};
+            AllClasses.methods.push(Classes.Vector2);
+                Classes.Vector2.name = "Vector2";
+                Classes.Vector2.constructor = [
+                    {name: "x", type: "Float", desc: "Define the X coord to use."},
+                    {name: "y", type: "Float", desc: "Define the Y coord to use."}
+                ];
+                Classes.Vector2.accessors = [
+                    {name: "x", type:"Float", desc: "Get or Set the X coord."},
+                    {name: "y", type:"Float", desc: "Get or Set the Y coord."},
+                ];
+                Classes.Vector2.methods = [
+
+                ];
+        </script>
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                display: block;
+                margin: auto;
+            }
+            #Header {
+                width: 100%;
+                height: 75px;
+                position: absolute;
+                background: #003264;
+                margin: auto;
+            }
+                #LogoTitle {
+                    width: 20%;
+                    height: 100%;
+                    position: absolute;
+                    display: block;
+                    margin: auto;
+                    cursor: pointer;
+                }
+                    #LogoTitleText {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        display block;
+                        font-size: 25px;
+                        font-family: arial;
+                        text-align: center;
+                        color: #E5E5E5;
+                        cursor: inherit;
+                    }
+            #Body {
+                width: 100%;
+                height: calc(100% - 75px);
+                position: absolute;
+                background: #000;
+                display: block;
+                bottom:0;
+                margin: auto;
+            }
+                #ClassNameBox {
+                    width: calc(100% - 140px);
+                    height: 65px;
+                    position: absolute;
+                    background: #222222;
+                    border: dotted #FFFF00;
+                    top: 20px;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                }
+                    #ClassName {
+                        width: 100%;;
+                        height: 25px;
+                        position: absolute;
+                        display: block;
+                        top: 0;
+                        bottom:0;
+                        margin: auto;
+                        font-size: 25px;
+                        font-family: arial;
+                        text-align: center;
+                        color: white;
+                    }
+                #Accessors {
+                    width: calc(50% - 80px);
+                    height: 100px;
+                    position: absolute;
+                    display: block;
+                    background: #222222;
+                    border: dotted #0064C8;
+                    top: 150px;
+                    left: 67px;
+                    margin: auto;
+                }
+                    #AccessorsText {
+                        width: 100%;
+                        height: 25px;
+                        position: absolute;
+                        display: block;
+                        top: -40px;
+                        margin: auto;
+                        font-size: 25px;
+                        font-family: arial;
+                        text-align: center;
+                        color: white;
+                    }
+                #Methods {
+                    width: calc(50% - 80px);
+                    height: 100px;
+                    position: absolute;
+                    display: block;
+                    background: #222222;
+                    border: dotted #C87D00;
+                    top: 150px;
+                    right: 67px;
+                    margin: auto;
+                }
+                    #MethodsText {
+                        width: 100%;
+                        height: 25px;
+                        position: absolute;
+                        display: block;
+                        top: -40px;
+                        margin: auto;
+                        font-size: 25px;
+                        font-family: arial;
+                        text-align: center;
+                        color: white;
+                    }
+        </style>
+        <style>
+            .Accessor {
+                height: 20px;
+                position: absolute;
+                display: block;
+                left: 10px;
+                margin: auto;
+                font-size: 20px;
+                font-family: arial;
+                color: white;
+                cursor: pointer;
+            }
+            .Method {
+                height: 20px;
+                position: absolute;
+                display: block;
+                left: 10px;
+                margin: auto;
+                font-size: 20px;
+                font-family: arial;
+                color: white;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="Header">
+            <div id="LogoTitle">
+                <p id="LogoTitleText">OPEN ENGINE</p>
+            </div>
+        </div>
+        <div id="Body">
+            <div id="ClassNameBox">
+                <p id="ClassName">Open Engine</p>
+            </div>
+            <div id="Accessors">
+                <p id="AccessorsText">Accessors</p>
+            </div>
+            <div id="Methods">
+                <p id="MethodsText">Methods</p>
+            </div>
+        </div>
+        <script>
+            /* Get Tags In Url */
+
+            const Components = {};
+            location.search.split('&').toString().substr(1).split(",").forEach(item => {
+                Components[item.split("=")[0]] = decodeURIComponent(item.split("=")[1]) ?  item.split("=")[1]: "No query strings available" ;
+            });
+
+            const Tag = Components.tag;
+            const Accessors = document.querySelector("#Accessors");
+            const Methods = document.querySelector("#Methods");
+
+            let LoadedAccessors = 0;
+            let LoadedMethods = 0;
+
+            if(Classes[Tag]) {
+                console.log(Classes[Tag]);
+
+                document.body.innerHTML += "<strong><u>Constructor</u></strong><br/><br/>";
+                document.body.innerHTML += "new " + Tag + "(";
+
+                for(let i = 0; i < Classes[Tag].constructor.length; i++) {
+                    document.body.innerHTML += Classes[Tag].constructor[i].name;
+
+                    if(i != Classes[Tag].constructor.length - 1) {
+                        document.body.innerHTML += ", ";
+                    }
+                }
+
+                document.body.innerHTML += ")<br/><br/>";
+                for(let i = 0; i < Classes[Tag].constructor.length; i++) {
+                    document.body.innerHTML += "<strong>" + Classes[Tag].constructor[i].name + "</strong><br/>";
+                    document.body.innerHTML += "-[" + Classes[Tag].constructor[i].type + "]<br/>";
+                    document.body.innerHTML += "-" + Classes[Tag].constructor[i].desc + "<br/>";
+
+                    document.body.innerHTML += "<br/>";
+                }
+
+                document.body.innerHTML += "<br/>";
+
+                document.body.innerHTML += "<strong><u>Accessors</u></strong><br/><br/>";
+                for(let i = 0; i < Classes[Tag].accessors.length; i++) {
+                    document.body.innerHTML += "<strong>" + Classes[Tag].accessors[i].name + "</strong><br/>";
+                    document.body.innerHTML += "-[" + Classes[Tag].accessors[i].type + "]<br/>";
+                    document.body.innerHTML += "-" + Classes[Tag].accessors[i].desc + "<br/>";
+
+                    document.body.innerHTML += "<br/>";
+                }
+
+                document.body.innerHTML += "<br/>";
+
+                document.body.innerHTML += "<strong><u>Methods</u></strong><br/><br/>";
+                for(let i = 0; i < Classes[Tag].methods.length; i++) {
+                    document.body.innerHTML += Classes[Tag].methods[i].name + "(";
+                    for(let pram = 0; pram < Classes[Tag].methods[i].prams.length; pram++) {
+                        document.body.innerHTML += Classes[Tag].methods[i].prams[pram].name;
+
+                        if(pram != Classes[Tag].methods[i].prams.length - 1) {
+                            document.body.innerHTML += ", ";
+                        }
+                    }
+
+                    document.body.innerHTML += ")</strong><br/>";
+
+                    for(let pram = 0; pram < Classes[Tag].methods[i].prams.length; pram++) {
+                        document.body.innerHTML += "<i>-" + Classes[Tag].methods[i].prams[pram].name + "[" + Classes[Tag].methods[i].prams[pram].type + "]</i><br/>";
+                    }
+
+                    document.body.innerHTML += "-" + Classes[Tag].methods[i].desc + "<br/>";
+
+                    document.body.innerHTML += "<br/>";
+                }
+
+            } else {
+                for(let accessor = 0; accessor < AllClasses.accessors.length; accessor++) {
+                    Accessors.innerHTML += "<p class='Accessor'>" + AllClasses.accessors[accessor].name + "</p>"
+
+                    LoadedAccessors++;
+                }
+
+                for(let method = 0; method < AllClasses.methods.length; method++) {
+                    Methods.innerHTML += "<p class='Method' style='top:" + (LoadedMethods*30 + 10) + "px;'>" + AllClasses.methods[method].name + "</p>"
+
+                    LoadedMethods++;
+                }
+            }
+        </script>
+    </body>
+
+</html>
